@@ -25,17 +25,20 @@ Execução no Terminal do Ubuntu:
 O comando abaixo realiza o download do pacote .deb (v4.14.4) e utiliza a variável WAZUH_MANAGER para registrar o agente no IP 192.168.0.23 de forma automática:
 
 ### Download e Instalação com Registro Automático
-´´´
+```
 wget https://packages.wazuh.com && \
 sudo WAZUH_MANAGER='192.168.0.23' dpkg -i ./wazuh-agent_4.14.4-1_amd64.deb
 
-´´´
+```
 ### Inicialização e Persistência do Serviço
-´´´
+
+```
 sudo systemctl daemon-reload
 sudo systemctl enable wazuh-agent
 sudo systemctl start wazuh-agent
-´´´
+
+```
+
 <img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/d0cf9215-45d8-463a-8e26-993f4e7cf456" />
 
 
