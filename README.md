@@ -19,7 +19,7 @@ Configurei uma segunda máquina virtual com Ubuntu para simular um servidor de p
 * Rede: Em modo NAT.
 
 ------------------------------
-###3. Instalação Assistida do Agente (Método do Dashboard)
+### 3. Instalação Assistida do Agente (Método do Dashboard)
 Para garantir a precisão da configuração, utilizei o fluxo de "Deploy New Agent" do painel do Wazuh. Este método gera um comando unificado que automatiza o download e injeta o IP do Manager diretamente no instalador.
 Execução no Terminal do Ubuntu:
 O comando abaixo realiza o download do pacote .deb (v4.14.4) e utiliza a variável WAZUH_MANAGER para registrar o agente no IP 192.168.0.23 de forma automática:
