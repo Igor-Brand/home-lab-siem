@@ -52,12 +52,12 @@ Após a instalação, a conectividade foi validada através do console web do SI
 <img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/a6bdd0fa-ae26-49c8-bb26-2d9cae94a765" />
 
 ------------------------------
-🛡️ ## SIEM Lab - Fase 2: Resposta a Incidentes com DFIR IRIS
+ ## SIEM Lab - Fase 2: Resposta a Incidentes com DFIR IRIS
 Esta etapa marca a evolução do laboratório, integrando a capacidade de detecção do Wazuh com a gestão de incidentes da plataforma DFIR IRIS. O objetivo principal é automatizar o fluxo de trabalho, transformando alertas críticos do SIEM em casos investigativos dentro do IRIS de forma imediata.
 <img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/3631a3ed-ff79-40a6-a6fe-f9c571fd12de" />
 Evidência da Integração (PoC): Demonstração da correlação em tempo real entre o evento detectado pelo Wazuh Manager (fundo) e o incidente gerado automaticamente no DFIR IRIS (frente). Note que o alerta Apparmor DENIED (Rule ID: 52002) foi propagado via Webhook, comprovando a comunicação bem-sucedida entre os diferentes nós da infraestrutura (IP .23 para IP .26).
 
-🖥️ ## Gerenciamento Remoto via PowerShell
+ ## Gerenciamento Remoto via PowerShell
 Devido à ausência de integração de mouse no console da máquina virtual do Wazuh, utilizei o PowerShell no host Windows como ferramenta central de configuração. Essa abordagem permitiu:
 Configuração de API: Provisionamento ágil das chaves de API e webhooks no ossec.conf.
 Gestão de Arquivos: Edição remota de scripts de integração sem dependência da interface gráfica da VM.
