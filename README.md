@@ -90,3 +90,37 @@ Timestamp preciso do evento.
 IP de origem e destino, permitindo que o analista de SOC inicie a contenção imediatamente.
 <img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/cf90704a-9a2d-43db-8d72-0a1ca8f574d2" />
 Gestão de Incidentes no DFIR IRIS: Visualização do alerta de Brute Force convertido automaticamente em um caso de investigação. A plataforma exibe o mapeamento para o framework MITRE ATT&CK, a severidade do evento (Level 10) e os logs brutos enviados pelo Wazuh, permitindo que a equipe de resposta (CSIRT) tenha todo o contexto necessário para a contenção do ataque.
+
+----
+### Detecção de Reconhecimento (Port Scanning com Nmap)
+Antes de qualquer tentativa de invasão, um atacante realiza o mapeamento da superfície de ataque. Nesta etapa, simulei um Port Scan utilizando o Nmap a partir do Kali Linux para identificar portas abertas e serviços vulneráveis no servidor Wazuh Manager.
+Metodologia do Teste:
+Ferramenta: Nmap v7.9x.
+Alvo: 192.168.0.23 (Wazuh Manager).
+Comando Utilizado: nmap -sV -Pn 192.168.0.23.
+Objetivo: Verificar se o SIEM é capaz de correlacionar múltiplas tentativas de conexão negadas pelo firewall como um evento de varredura.
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/29cf9fa7-3b36-4de4-9105-5c107dd70803" />
+
+#### Análise de Dados com DQL (Dashboards Query Language)
+Para validar a detecção, utilizei a linguagem de consulta DQL no Dashboard do Wazuh. Através do filtro por IDs de regra específicos, consegui isolar o evento de reconhecimento em meio aos logs de sistema.
+Consulta Utilizada: rule.id : ("40101" or "40111")
+Resultado: O motor de análise disparou a Regra 40111 (Multiple firewall drops from same source).
+Mapeamento MITRE: O evento foi classificado com o Rule Level 10 e associado à técnica T1110 (Brute Force), evidenciando que o volume de tentativas de conexão foi interpretado como uma atividade precursora de um ataque de força bruta.
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/876ef89c-7ba4-4d17-bd27-626a0609aafc" />
+
+---
+### 🛡️ Teste de Rootkit e Persistência Oculta
+O objetivo deste teste foi validar a capacidade do Wazuh em detectar a criação de artefatos escondidos em diretórios sensíveis do sistema e o uso de privilégios elevados para tal ação.
+#### 1. Simulação do Ataque
+Para simular o comportamento de um rootkit, utilizei o terminal para criar um diretório oculto e um script de "backdoor" dentro de /usr/bin, uma área crítica do Linux. O uso do comando sudo foi proposital para testar a auditoria de comandos do SIEM.
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/0f7ab109-3f98-4626-af56-71a3383a85ce" />
+
+#### 2. Detecção e Análise Técnica (Wazuh)
+O Wazuh capturou a execução do comando via módulo de auditoria. Através de uma consulta DQL (rule.id: "5402"), identifiquei o log exato da escalação de privilégio. O SIEM mapeou a ação para a técnica MITRE T1548.003, classificando-a como Privilege Escalation e Defense Evasion.
+<img width="571" height="323" alt="image" src="https://github.com/user-attachments/assets/ae2f61e6-b2f0-4a83-bd41-94e0faa47684" />
+
+#### 3. Gestão do Incidente (DFIR IRIS)
+Assim que o Wazuh processou o alerta de nível crítico, a integração o enviou para o DFIR IRIS. O incidente foi criado automaticamente, preservando evidências forenses valiosas, como o comando exato utilizado (chmod 777) e o caminho do arquivo oculto, permitindo uma resposta imediata do analista de segurança.
+<img width="571" height="323" alt="image" src="https://github.com/user-attachments/assets/c4d748ad-9eff-436b-ab38-dedf2c8bf2c1" />
+
+
