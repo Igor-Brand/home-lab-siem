@@ -121,6 +121,7 @@ O Wazuh capturou a execução do comando via módulo de auditoria. Através de u
 
 #### 3. Gestão do Incidente (DFIR IRIS)
 Assim que o Wazuh processou o alerta de nível crítico, a integração o enviou para o DFIR IRIS. O incidente foi criado automaticamente, preservando evidências forenses valiosas, como o comando exato utilizado (chmod 777) e o caminho do arquivo oculto, permitindo uma resposta imediata do analista de segurança.
+
 <img width="571" height="323" alt="image" src="https://github.com/user-attachments/assets/c4d748ad-9eff-436b-ab38-dedf2c8bf2c1" />
 
 
