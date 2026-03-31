@@ -66,3 +66,27 @@ Automação de Serviços: Reinício e validação dos serviços do Manager via t
 Gerenciamento Remoto via PowerShell (SSH): Evidência da sessão SSH estabelecida a partir do host Windows para o servidor Wazuh Manager. A imagem demonstra a superação da limitação de interface da VM, confirmando a identidade do host, o endereço IP (.23) e o status operacional (Running) de todos os serviços do SIEM necessários para a integração com o DFIR IRIS.
 
 ---
+### 🔍 1. Simulação de Ataque: Brute Force SSH
+O primeiro teste de estresse do ambiente foi um ataque de força bruta contra o serviço SSH do servidor Wazuh. Utilizei o Kali Linux com a ferramenta Hydra para tentar adivinhar a senha do usuário wazuh-user.
+Detalhes do Teste:
+Ferramenta: THC-Hydra v9.6.
+Alvo: 192.168.0.23 (Wazuh Manager).
+Dicionário: lista_de_senha.txt.
+Objetivo: Gerar múltiplas falhas de autenticação em um curto período para disparar os gatilhos do SIEM.
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/86b552aa-a2ab-4e89-8c68-f9ee979de250" />
+
+#### 🚨 2. Detecção e Análise no Wazuh
+O motor de análise do Wazuh identificou imediatamente o padrão anômalo de tentativas de login. O log de eventos registrou múltiplas falhas seguidas (Rule ID: 5710 e 5712), elevando o nível do alerta devido à persistência do ataque.
+Identificação do Atacante: O SIEM capturou o IP de origem do Kali Linux.
+Classificação: O evento foi classificado como uma tentativa de invasão (Authentication Failure).
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/0d938321-44ac-4b87-aa9a-a38e79a210b3" />
+Análise de Eventos no Dashboard (Wazuh Discover): Visualização detalhada do log de segurança após o ataque simulado com Hydra. A imagem evidencia a captura do IP de origem do atacante (.24), o usuário alvo (wazuh-user) e a mensagem do sistema (PAM authentication failures), demonstrando a capacidade do SIEM em decodificar e indexar tentativas de invasão em tempo real.
+
+##### 📑 3. Escalonamento Automático para o DFIR IRIS
+Graças à integração configurada na Fase 2, o alerta crítico de Brute Force não ficou apenas no log. O Wazuh Integratord disparou um webhook para o DFIR IRIS, criando automaticamente um caso de investigação.
+Dados integrados no incidente:
+Descrição completa do ataque.
+Timestamp preciso do evento.
+IP de origem e destino, permitindo que o analista de SOC inicie a contenção imediatamente.
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/cf90704a-9a2d-43db-8d72-0a1ca8f574d2" />
+Gestão de Incidentes no DFIR IRIS: Visualização do alerta de Brute Force convertido automaticamente em um caso de investigação. A plataforma exibe o mapeamento para o framework MITRE ATT&CK, a severidade do evento (Level 10) e os logs brutos enviados pelo Wazuh, permitindo que a equipe de resposta (CSIRT) tenha todo o contexto necessário para a contenção do ataque.
